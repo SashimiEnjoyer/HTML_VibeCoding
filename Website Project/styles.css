@@ -1,0 +1,539 @@
+/* ===== GLOBAL STYLES ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* Makes padding and border included in element's total width/height */
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; /* Modern font stack */
+    background: #0a0a0a; /* Dark background */
+    color: #ffffff; /* White text */
+    overflow-x: hidden; /* Prevent horizontal scrollbar */
+}
+
+/* Fixed background gradient that stays in place while scrolling */
+.gradient-bg {
+    position: fixed; /* Stays in same position when scrolling */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Multiple radial gradients layered on top of each other */
+    background: radial-gradient(circle at 20% 50%, #6366f1 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, #8b5cf6 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, #ec4899 0%, transparent 50%),
+                #0a0a0a;
+    opacity: 0.4;
+    z-index: -1; /* Behind all other content */
+    animation: pulse 4s ease-in-out infinite alternate; /* Breathing effect */
+}
+
+/* Animation that makes the background "breathe" by changing opacity */
+@keyframes pulse {
+    0% { opacity: 0.3; }
+    100% { opacity: 0.6; }
+}
+
+/* ===== REUSABLE CONTAINER ===== */
+.container {
+    max-width: 1200px; /* Maximum width for content */
+    margin: 0 auto; /* Centers the container horizontally */
+    padding: 0 20px; /* Left and right padding */
+}
+
+/* ===== NAVIGATION HEADER ===== */
+header {
+    position: fixed; /* Stays at top when scrolling */
+    top: 0;
+    width: 100%;
+    padding: 20px 0;
+    background: rgba(10, 10, 10, 0.8); /* Semi-transparent dark background */
+    backdrop-filter: blur(10px); /* Blurs content behind header */
+    z-index: 1000; /* High z-index to stay above other content */
+    transition: all 0.3s ease; /* Smooth transitions for hover/scroll effects */
+}
+
+nav {
+    display: flex;
+    justify-content: space-between; /* Logo on left, links in center, button on right */
+    align-items: center; /* Vertically center all items */
+}
+
+/* Logo styling with gradient text effect */
+.logo {
+    font-size: 2rem;
+    font-weight: 900; /* Extra bold */
+    background: linear-gradient(135deg, #6366f1, #8b5cf6, #ec4899); /* Purple to pink gradient */
+    background-clip: text; /* Clips background to text shape */
+    -webkit-background-clip: text; /* Safari support */
+    -webkit-text-fill-color: transparent; /* Makes text transparent to show gradient */
+    letter-spacing: -0.05em; /* Tighter letter spacing */
+}
+
+/* Navigation links container */
+.nav-links {
+    display: flex;
+    list-style: none; /* Removes bullet points */
+    gap: 2rem; /* Space between links */
+}
+
+/* Individual navigation link styling */
+.nav-links a {
+    color: #ffffff;
+    text-decoration: none; /* Removes underline */
+    font-weight: 500; /* Medium weight */
+    transition: all 0.3s ease; /* Smooth hover transitions */
+    position: relative; /* Needed for the ::after pseudo-element */
+}
+
+/* Hover effect for nav links - changes color */
+.nav-links a:hover {
+    color: #6366f1;
+}
+
+/* Animated underline effect using ::after pseudo-element */
+.nav-links a::after {
+    content: ''; /* Empty content to create the line */
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 0; /* Starts with no width */
+    height: 2px;
+    background: #6366f1;
+    transition: width 0.3s ease; /* Animates width change */
+}
+
+/* On hover, expand the underline to full width */
+.nav-links a:hover::after {
+    width: 100%;
+}
+
+/* CTA (Call-to-Action) button in header */
+.cta-button {
+    background: linear-gradient(135deg, #6366f1, #8b5cf6); /* Gradient background */
+    color: white;
+    padding: 12px 24px;
+    border-radius: 30px; /* Rounded pill shape */
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4); /* Glowing shadow effect */
+}
+
+/* Hover effect for CTA button - lifts up and increases shadow */
+.cta-button:hover {
+    transform: translateY(-2px); /* Moves button up slightly */
+    box-shadow: 0 8px 25px rgba(99, 102, 241, 0.6); /* Larger, more intense shadow */
+}
+
+/* ===== HERO SECTION (Main landing area) ===== */
+.hero {
+    min-height: 100vh; /* Takes up full viewport height */
+    display: flex;
+    align-items: center; /* Centers content vertically */
+    justify-content: center; /* Centers content horizontally */
+    text-align: center;
+    position: relative; /* Needed for absolute positioned children */
+    padding-top: 80px; /* Account for fixed header */
+    overflow: hidden; /* Hide overflowing parallax elements */
+}
+
+/* Parallax background element that moves on scroll */
+.parallax-bg {
+    position: absolute;
+    top: -20%; /* Extends beyond section boundaries */
+    left: -20%;
+    width: 140%; /* Larger than container for parallax movement */
+    height: 140%;
+    /* Multiple gradient circles for depth */
+    background: radial-gradient(circle at 30% 40%, rgba(99, 102, 241, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 70% 20%, rgba(139, 92, 246, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 60% 80%, rgba(236, 72, 153, 0.3) 0%, transparent 50%);
+    will-change: transform; /* Optimizes for animations */
+}
+
+/* Hero content container - positioned above parallax backgrounds */
+.hero-content {
+    position: relative;
+    z-index: 2; /* Above background elements */
+    will-change: transform; /* Optimizes for parallax animations */
+}
+
+/* Main hero heading with gradient text */
+.hero-content h1 {
+    font-size: clamp(3rem, 8vw, 8rem); /* Responsive font size: min 3rem, max 8rem */
+    font-weight: 900; /* Heaviest font weight */
+    line-height: 0.9; /* Tight line spacing */
+    margin-bottom: 2rem;
+    /* Three-color gradient text effect */
+    background: linear-gradient(135deg, #ffffff, #6366f1, #8b5cf6);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -0.02em; /* Slightly tighter letters */
+    animation: slideUp 1s ease-out; /* Entrance animation */
+}
+
+/* Slide-up animation for hero elements */
+@keyframes slideUp {
+    0% {
+        opacity: 0;
+        transform: translateY(50px); /* Starts 50px below */
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0); /* Ends at normal position */
+    }
+}
+
+/* Hero subtitle text */
+.hero-subtitle {
+    font-size: 1.5rem;
+    color: #a1a1aa; /* Gray color for contrast */
+    margin-bottom: 3rem;
+    max-width: 600px; /* Limits line length for readability */
+    margin-left: auto; /* Centers the text block */
+    margin-right: auto;
+    animation: slideUp 1s ease-out 0.2s both; /* Delayed entrance animation */
+}
+
+/* Container for hero action buttons */
+.hero-buttons {
+    display: flex;
+    gap: 1rem; /* Space between buttons */
+    justify-content: center;
+    flex-wrap: wrap; /* Wraps on small screens */
+    animation: slideUp 1s ease-out 0.4s both; /* Even more delayed entrance */
+}
+
+/* Primary action button with shimmer effect */
+.btn-primary {
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    color: white;
+    padding: 16px 32px;
+    border-radius: 50px; /* Fully rounded */
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+    position: relative; /* Needed for shimmer effect */
+    overflow: hidden; /* Hides shimmer outside button */
+}
+
+/* Shimmer effect that sweeps across button */
+.btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%; /* Starts off-screen to the left */
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s ease; /* Animates the sweep */
+}
+
+/* On hover, sweep the shimmer across the button */
+.btn-primary:hover::before {
+    left: 100%; /* Moves to off-screen right */
+}
+
+/* Button hover effects */
+.btn-primary:hover {
+    transform: translateY(-3px); /* Lifts button up */
+    box-shadow: 0 12px 30px rgba(99, 102, 241, 0.6); /* Larger shadow */
+}
+
+/* Secondary button (outline style) */
+.btn-secondary {
+    background: transparent;
+    color: white;
+    padding: 16px 32px;
+    border: 2px solid #374151; /* Gray border */
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+}
+
+/* Secondary button hover effects */
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.1); /* Subtle white background */
+    border-color: #6366f1; /* Changes border to brand color */
+    transform: translateY(-3px);
+}
+
+/* ===== FLOATING DECORATIVE ELEMENTS ===== */
+.floating-element {
+    position: absolute;
+    opacity: 0.6; /* Semi-transparent */
+    animation: float 6s ease-in-out infinite; /* Continuous floating animation */
+}
+
+/* Position floating elements at different locations */
+.floating-element:nth-child(1) {
+    top: 20%;
+    left: 10%;
+    animation-delay: -2s; /* Starts animation 2s early for stagger effect */
+}
+
+.floating-element:nth-child(2) {
+    top: 60%;
+    right: 10%;
+    animation-delay: -4s; /* Different delay for varied movement */
+}
+
+.floating-element:nth-child(3) {
+    bottom: 20%;
+    left: 20%;
+    animation-delay: -1s;
+}
+
+/* Floating animation - moves up/down while rotating */
+@keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(180deg); } /* Peak of movement */
+}
+
+/* Geometric shapes used as floating elements */
+.geometric-shape {
+    width: 100px;
+    height: 100px;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    border-radius: 20px; /* Rounded square */
+    opacity: 0.3;
+}
+
+/* ===== FEATURES SECTION ===== */
+.features {
+    padding: 100px 0; /* Large vertical padding */
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
+    position: relative;
+    overflow: hidden; /* Hide parallax backgrounds that extend beyond */
+}
+
+/* Parallax background for features section */
+.features-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.1) 50%, rgba(236, 72, 153, 0.1) 100%);
+    will-change: transform; /* Optimize for animations */
+}
+
+/* Section titles with gradient text */
+.section-title {
+    text-align: center;
+    font-size: 3rem;
+    font-weight: 800;
+    margin-bottom: 4rem;
+    background: linear-gradient(135deg, #ffffff, #6366f1); /* White to purple gradient */
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    position: relative;
+    z-index: 2; /* Above background elements */
+    will-change: transform; /* Optimize for parallax */
+}
+
+/* Grid layout for feature cards */
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive columns */
+    gap: 2rem; /* Space between cards */
+    position: relative;
+    z-index: 2; /* Above background */
+}
+
+/* Individual feature card with glassmorphism effect */
+.feature-card {
+    background: rgba(255, 255, 255, 0.05); /* Very transparent white */
+    backdrop-filter: blur(10px); /* Blurs content behind card */
+    border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border */
+    border-radius: 20px;
+    padding: 2rem;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden; /* Hide the top border effect */
+}
+
+/* Top border gradient effect that appears on hover */
+.feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #6366f1, transparent);
+    opacity: 0; /* Hidden by default */
+    transition: opacity 0.3s ease;
+}
+
+/* Show top border on hover */
+.feature-card:hover::before {
+    opacity: 1;
+}
+
+/* Card hover effects */
+.feature-card:hover {
+    transform: translateY(-10px); /* Lifts card up */
+    background: rgba(255, 255, 255, 0.1); /* Slightly more opaque */
+    box-shadow: 0 20px 40px rgba(99, 102, 241, 0.2); /* Glowing shadow */
+}
+
+/* Icon container for each feature */
+.feature-icon {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    border-radius: 15px;
+    display: flex;
+    align-items: center; /* Centers icon vertically */
+    justify-content: center; /* Centers icon horizontally */
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+/* Feature card heading */
+.feature-card h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: #ffffff;
+}
+
+/* Feature card description text */
+.feature-card p {
+    color: #a1a1aa; /* Gray text for readability */
+    line-height: 1.6; /* Comfortable line spacing */
+}
+
+/* ===== STATS SECTION ===== */
+.stats {
+    padding: 100px 0;
+    text-align: center;
+    position: relative;
+    overflow: hidden; /* Hide parallax backgrounds */
+}
+
+/* Parallax background for stats section */
+.stats-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(ellipse at center, rgba(99, 102, 241, 0.2) 0%, transparent 70%);
+    will-change: transform; /* Optimize for parallax animations */
+}
+
+/* Grid layout for statistics */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Responsive columns */
+    gap: 3rem;
+    margin-top: 3rem;
+    position: relative;
+    z-index: 2; /* Above background element */
+}
+
+/* Individual statistic item */
+.stat-item h3 {
+    font-size: 3rem;
+    font-weight: 900;
+    /* Three-color gradient for numbers */
+    background: linear-gradient(135deg, #6366f1, #8b5cf6, #ec4899);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 0.5rem;
+}
+
+/* Statistic description text */
+.stat-item p {
+    color: #a1a1aa;
+    font-size: 1.1rem;
+}
+
+/* Loading state for stats */
+.stat-item h3.loading {
+    background: linear-gradient(90deg, #6366f1, #8b5cf6, #6366f1);
+    background-size: 200% 100%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shimmer 1.5s ease-in-out infinite;
+}
+
+/* Shimmer animation for loading state */
+@keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+
+/* Error state styling */
+.stat-item h3.error {
+    color: #ef4444;
+    font-size: 1rem;
+}
+
+/* ===== FOOTER SECTION ===== */
+footer {
+    background: rgba(0, 0, 0, 0.8); /* Semi-transparent dark background */
+    padding: 50px 0;
+    text-align: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.1); /* Subtle top border */
+}
+
+/* Footer content grid layout */
+.footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+/* Footer section headings */
+.footer-section h4 {
+    color: #ffffff;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+/* Footer links */
+.footer-section a {
+    color: #a1a1aa;
+    text-decoration: none;
+    display: block; /* Each link on its own line */
+    margin-bottom: 0.5rem;
+    transition: color 0.3s ease;
+}
+
+/* Footer link hover effect */
+.footer-section a:hover {
+    color: #6366f1; /* Changes to brand color */
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+@media (max-width: 768px) {
+    /* Hide navigation links on mobile devices */
+    .nav-links {
+        display: none;
+    }
+    
+    /* Stack hero buttons vertically on mobile */
+    .hero-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    /* Hide floating elements on mobile for cleaner look */
+    .floating-element {
+        display: none;
+    }
+}
